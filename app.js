@@ -13,7 +13,7 @@ app.use((req, res, next) => {
    res.header('Access-Control-Allow-Origin', '*');
    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
-   if(req.method === 'OPTIONS') {
+   if (req.method === 'OPTIONS') {
       res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE');
 
       return res.status(200).json({});
@@ -21,6 +21,9 @@ app.use((req, res, next) => {
 
    next();
 });
+
+const mongoose = require('mongoose');
+mongoose.connect('mongodb+srv://merlinmigan:' + process.env.MONGO_ATLAS_PW + '@node-rest-shop.5xrrn.mongodb.net/?retryWrites=true&w=majority&appName=node-rest-shop');
 
 // Routes which handle requests
 const productRoutes = require('./api/routes/products');
