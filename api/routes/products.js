@@ -83,7 +83,7 @@ router.patch('/:productId', (req, res, next) => {
       updateOps[ops.propName] = ops.value;
    }
 
-   Product.findOneAndUpdate({ _id: id }, { $set: updateOps }, { new: true})
+   Product.findOneAndUpdate({ _id: id }, { $set: updateOps }, { new: true })
       .exec()
       .then(result => {
          console.log(result);
