@@ -10,6 +10,7 @@ router.get('/', (req, res, next) => {
    Order
       .find()
       .select('product quantity _id')
+      .populate('product', 'name')
       .exec()
       .then(docs => {
          res.status(200).json({
@@ -32,6 +33,30 @@ router.get('/', (req, res, next) => {
             error: err
          });
       });
+});
+
+router.get('/:orderId', async (req, res, next) => {
+   try {
+      const id = req.params.orderId;
+      const order = await Order.findById(id).select('quantity product _id').populate('product', 'name price');
+
+      if(!order) {
+         return res.status(404).json({
+            message: "Aucune commande ne correspond à l'ID " + id
+         })
+      }
+
+      res.status(200).json({
+         message:'La commande N° ' + id + ' a été trouvée !',
+         details: order
+      });
+
+   } catch (err) {
+      console.log(err);
+      res.status(500).json({
+         error: err.message || err
+      });
+   }
 });
 
 router.post('/', async (req, res) => {
@@ -59,30 +84,6 @@ router.post('/', async (req, res) => {
             quantity: result.quantity,
             product: result.product
          }
-      });
-
-   } catch (err) {
-      console.log(err);
-      res.status(500).json({
-         error: err.message || err
-      });
-   }
-});
-
-router.get('/:orderId', async (req, res) => {
-   try {
-      const id = req.params.orderId;
-      const order = await Order.findById(id).select('quantity product _id');
-
-      if (!order) {
-         return res.status(404).json({
-            message: "Aucune commande ne correspond à cet ID !"
-         })
-      }
-
-      res.status(200).json({
-         message: 'La commande ' + id + ' a été trouvée !',
-         orderId: order
       });
 
    } catch (err) {
