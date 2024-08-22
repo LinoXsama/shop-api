@@ -8,6 +8,9 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// app.use(express.static('uploads'));
+app.use('/uploads', express.static('uploads'));
+
 // CORS management
 app.use((req, res, next) => {
    res.header('Access-Control-Allow-Origin', '*');
