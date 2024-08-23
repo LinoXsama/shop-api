@@ -83,9 +83,10 @@ router.post('/', upload.single('productImage'), (req, res, next) => {
          res.status(201).json({
             message: 'Product created successfully !',
             createdProduct: {
+               id: result._id,
                name: result.name,
                price: result.price,
-               id: result._id,
+               productImage: result.productImage,
                request: {
                   type: "GET",
                   url: "http://localhost:3000/products/" + result._id,
@@ -106,7 +107,7 @@ router.get('/:productId', (req, res, next) => {
    const id = req.params.productId;
 
    Product.findById(id)
-      .select('name price _id')
+      .select('name price productImage _id')
       .exec()
       .then(doc => {
          if (doc) {
