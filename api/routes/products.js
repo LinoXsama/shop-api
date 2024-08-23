@@ -10,14 +10,15 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
    destination: function (req, file, cb) {
-      cb(null, './uploads/');
+      cb(null, './uploads/'); // définition du répertoire de destination
    },
    filename: function (req, file, cb) {
       const date = new Date().toISOString().replace(/:/g, '-');
-      cb(null, date + '-' + file.originalname);
+      cb(null, date + '-' + file.originalname); // nommage du fichier
    }
 });
 
+// filtre multer pour ne récupérer que les fichiers png & jpeg
 const filter = (req, file, cb) => {
    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg') {
       // stocke le fichier
@@ -28,6 +29,7 @@ const filter = (req, file, cb) => {
    }
 };
 
+// objet multer utilisable par la route post
 const upload = multer({ 
    storage: storage,
    limits: { fileSize: 1024 * 1024 * 5 },
